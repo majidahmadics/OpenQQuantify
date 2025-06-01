@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hello, {{user.username}}!</h1>
+    <h2>Enter a drug name to search:</h2>
+    <input type="text" name="drug_name" placeholder="Enter drug name">
+    <input type="submit" value="Search">
+    {% for post in posts%}
+    <div><p>{{ post.drug.username}} effects: <b>{{ post.content}}</b></p></div>
+    {% endfor%}
+{% endblock %}

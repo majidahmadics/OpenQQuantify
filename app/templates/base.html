@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - DrugsOnline.solutions</title>
+        {% else %}
+        <title>Welcome to DrugsOnline</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>DrugsOnline: <a href="/index">Home</a></div>
+        <hr>
+        {% block content%}{% endblock %}
+    </body>
+</html>
