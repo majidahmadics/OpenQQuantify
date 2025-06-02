@@ -195,3 +195,6 @@ cython_debug/
 .cursorindexingignore
 
 config.py
+
+# Ignore config.py in all subdirectories as well
+**/config.py
