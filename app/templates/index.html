@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, {{user.username}}!</h1>
-    <h2>Enter a drug name to search:</h2>
-    <input type="text" name="drug_name" placeholder="Enter drug name">
-    <input type="submit" value="Search">
-    {% for post in posts%}
-    <div><p>{{ post.drug.username}} effects: <b>{{ post.content}}</b></p></div>
-    {% endfor%}
+    <h1>Hello, {{ user.username }}!</h1>
+
+    <h2>Enter a drug name to search for interactions:</h2>
+    <form method="POST" action="{{ url_for('index') }}">
+        <input type="text" name="drug_name" placeholder="Enter drug name" value="{{ searched_drug_name or '' }}">
+        <input type="submit" value="Search Interactions">
+    </form>
+
+    {% if drug_interactions %}
+    <div>
+        <h3>Major Drug Interactions for {{ searched_drug_name }}:</h3>
+        <pre>{{ drug_interactions }}</pre> {# Using <pre> to preserve formatting from the AI, like lists #}
+    </div>
+    {% endif %}
+
+    <hr> 
+    {# This section displays the static posts, you can keep or remove it #}
+    <h2>General Drug Information:</h2>
+    {% for post in posts %}
+    <div>
+        <p><b>{{ post.drug.username }}</b>: {{ post.content }}</p>
+    </div>
+    {% endfor %}
 {% endblock %}
