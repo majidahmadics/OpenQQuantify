@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request, url_for
 from app import app
 from app.forms import LoginForm, SignupForm
 from openai import OpenAI
@@ -66,7 +66,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash(f'Login requested for user {form.username.data}, remember_me={form.remember_me.data}')
-        return redirect('/index')
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -75,7 +75,7 @@ def signup():
     if form.validate_on_submit():
         if form.password.data != form.repeat_password.data:
             flash('Passwords do not match. Please try again.')
-            return redirect('/signup')
+            return redirect(url_for('signup'))
         flash(f'Signup requested for user {form.username.data} with email {form.email.data}')
-        return redirect('/index')
+        return redirect(url_for('index'))
     return render_template('signup.html', title='Sign Up', form=form)

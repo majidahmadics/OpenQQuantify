@@ -10,9 +10,9 @@
     <body>
         <div>
             DrugsOnline:
-            <a href="/index">Home</a>
-            <a href="/login">Login</a>
-            <a href="/signup">Sign Up</a>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('signup') }}">Sign Up</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
