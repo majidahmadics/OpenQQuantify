@@ -1,8 +1,14 @@
 from flask import render_template, flash, redirect, request, url_for
-from app import app
+from flask_login import current_user, login_user
+import sqlalchemy as sa
+
+from app import app, db
+from app.models import User
 from app.forms import LoginForm, SignupForm
-from openai import OpenAI
 from config import Config
+
+from openai import OpenAI
+
 
 client = OpenAI(
     base_url=app.config['OPENROUTER_BASE_URL'],
