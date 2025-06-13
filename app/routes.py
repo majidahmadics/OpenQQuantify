@@ -1,11 +1,13 @@
 from flask import render_template, flash, redirect, request, url_for
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
+
+from urllib.parse import urlsplit
 
 from app import app, db
 from app.models import User
 from app.forms import LoginForm, SignupForm
-from config import Config
+
 
 from openai import OpenAI
 
@@ -17,6 +19,7 @@ client = OpenAI(
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
+@login_required
 def index():
     user = {'username': 'Miguel'}
     posts = [
@@ -60,8 +63,7 @@ def index():
             flash("Please enter a drug name.", "warning")
 
     return render_template('index.html', 
-                           title='Home', 
-                           user=user, 
+                           title='Home Page',  
                            posts=posts, 
                            drug_interactions=drug_interactions,
                            searched_drug_name=searched_drug_name)
@@ -79,7 +81,11 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        next_page = request.args.get('next')
+        if not next_page or urlsplit(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
+        flash(f'Logged in as {form.username.data}')
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
